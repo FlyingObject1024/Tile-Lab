@@ -15,6 +15,7 @@ public class PuzzleManager : MonoBehaviour
     int gate_total_number = -1;
     int goal_total_number = -1;
 
+    public GridManager grid_manager;
     private List<GameObject> tiles = new List<GameObject>();
 
     int tile_index = -1;

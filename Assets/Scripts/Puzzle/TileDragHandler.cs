@@ -5,7 +5,7 @@ using UnityEngine;
 public class TileDragHandler : MonoBehaviour
 {
     private TileManager tile_mng;
-    private bool isDragging = false;
+    public bool isDragging = false;
 
     void Start()
     {

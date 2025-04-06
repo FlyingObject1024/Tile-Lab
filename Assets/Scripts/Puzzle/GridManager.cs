@@ -8,6 +8,7 @@ public class GridManager : MonoBehaviour
     public int height = 10;
     public float cellSize = 1.0f;
 
+    // À•W‚ğkey‚Æ‚·‚é«‘Œ^‚É’¼‚·
     public TileManager[,] grid;
 
     void Awake()

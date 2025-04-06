@@ -33,6 +33,8 @@ public class TileManager : MonoBehaviour
     int tile_rotation = 0;
 
     SpriteRenderer renderer;
+    int sprite_height = 0;
+    int sprite_width = 0;
 
     public void setMatrix(int size, List<List<int>> mat)
     {
@@ -77,10 +79,10 @@ public class TileManager : MonoBehaviour
         int tile_height = tile0_tex.height;
 
         // 2x2枚を貼り付けるので、全体サイズは2倍
-        int width = tile_width * 2;
-        int height = tile_height * 2;
+        sprite_width = tile_width * 2;
+        sprite_height = tile_height * 2;
 
-        Texture2D newTexture = new Texture2D(width, height, TextureFormat.RGBA32, false);
+        Texture2D newTexture = new Texture2D(sprite_width, sprite_height, TextureFormat.RGBA32, false);
 
         Debug.Log("generateSprite");
 
@@ -120,7 +122,7 @@ public class TileManager : MonoBehaviour
 
         Debug.Log("attachSprite: " + sprite_name);
         // 新しいスプライトを作成して貼り付け
-        Rect rect = new Rect(0, 0, width, height);
+        Rect rect = new Rect(0, 0, sprite_width, sprite_height);
         Vector2 pivot = new Vector2(0.5f, 0.5f);
         Sprite newSprite = Sprite.Create(newTexture, rect, pivot);
 
@@ -197,6 +199,8 @@ public class TileManager : MonoBehaviour
         if(tileType == TileType.Input || tileType == TileType.Gate)
         {
             isDraggable = true;
+            BoxCollider2D box_collider_2d = GetComponent<BoxCollider2D>();
+            box_collider_2d.size = new Vector2(2f,2f);
         }
     }
 
