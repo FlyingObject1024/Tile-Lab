@@ -1,35 +1,34 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class GridManager : MonoBehaviour
 {
     public static GridManager Instance;
 
-    public int width = 10;
-    public int height = 10;
-    public float cellSize = 1.0f;
+    // セルサイズを720px(480px+240px)にする
+    public float cellSize = 2.0f;
 
-    // 座標をkeyとする辞書型に直す
-    public TileManager[,] grid;
+    public Dictionary<Vector2Int, TileManager> grid_dic = new Dictionary<Vector2Int, TileManager>();
 
     void Awake()
     {
         Instance = this;
-        grid = new TileManager[width, height];
     }
 
     public bool IsOccupied(Vector2Int pos)
     {
-        return grid[pos.x, pos.y] != null;
+        TileManager tile;
+        return grid_dic.TryGetValue(pos, out tile);
     }
 
     public void SetTile(Vector2Int pos, TileManager tile)
     {
-        grid[pos.x, pos.y] = tile;
+        grid_dic.Add(pos, tile);
     }
 
     public void RemoveTile(Vector2Int pos)
     {
-        grid[pos.x, pos.y] = null;
+        grid_dic.Remove(pos);
     }
 
     public Vector3 GridToWorld(Vector2Int pos)

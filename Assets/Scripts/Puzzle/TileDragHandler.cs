@@ -43,19 +43,16 @@ public class TileDragHandler : MonoBehaviour
 
         Vector2Int gridPos = GridManager.Instance.WorldToGrid(transform.position);
 
-        // 範囲内・未占有なら配置
-        if (gridPos.x >= 0 && gridPos.y >= 0 &&
-            gridPos.x < GridManager.Instance.width && gridPos.y < GridManager.Instance.height)
+        // grid未占有なら配置
+        if (!GridManager.Instance.IsOccupied(gridPos))
         {
-            if (!GridManager.Instance.IsOccupied(gridPos))
-            {
-                tile_mng.PlaceAt(gridPos);
-            }
-            else
-            {
-                // 戻す
-                tile_mng.PlaceAt(tile_mng.gridPosition);
-            }
+            tile_mng.PlaceAt(gridPos);
         }
+        else
+        {
+            // 戻す
+            tile_mng.PlaceAt(tile_mng.gridPosition);
+        }
+        
     }
 }
