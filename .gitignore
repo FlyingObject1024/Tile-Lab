@@ -5,6 +5,6 @@
 !.gitignore
 !.gitattributes
 
-!Assets/*
-!Packages/*
-!ProjectSettings/*
+!Assets/**
+!Packages/**
+!ProjectSettings/**
