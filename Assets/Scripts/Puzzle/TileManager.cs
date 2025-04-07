@@ -37,7 +37,6 @@ public class TileManager : MonoBehaviour
 
     public GameObject outputTilePrefab;
 
-
     public string PrintMatrix(List<List<int>> mat)
     {
         string s = mat.Count + ":";
@@ -196,7 +195,7 @@ public class TileManager : MonoBehaviour
 
     void outputInit()
     {
-
+        setMatrixSprite();
     }
 
     public void init()
@@ -251,7 +250,7 @@ public class TileManager : MonoBehaviour
                 }
                 else
                 {
-                    generateOutput(output_matrix);
+                    generateOutput(direction, output_matrix);
                     return true;
                 }
             }
@@ -264,9 +263,27 @@ public class TileManager : MonoBehaviour
     }
 
     // outputを生成する
-    public void generateOutput(List<List<int>> output_matrix)
+    public bool generateOutput(int direction, List<List<int>> output_matrix)
     {
         Debug.Log("Generate: "+PrintMatrix(output_matrix));
+
+        GameObject new_output_tile = Instantiate(outputTilePrefab);
+        new_output_tile.name = "output<-" + this.name;
+        new_output_tile.transform.SetParent(this.transform);
+
+        TileManager tileManager = new_output_tile.GetComponent<TileManager>();
+        if (tileManager != null)
+        {
+            tileManager.tileType = TileType.Output;
+            tileManager.setMatrix(output_matrix.Count, output_matrix);
+            tileManager.setMatrixSprite();
+
+            Vector2Int newPosition = gridPosition + GridManager.Instance.direction_list[tile_direction];
+            
+            return GridManager.Instance.SetOutputTile(newPosition, new_output_tile);
+        }
+
+        return false;
     }
 
     // 各種Gate処理

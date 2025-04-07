@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using static UnityEditor.PlayerSettings;
 
@@ -13,6 +14,7 @@ public class GridManager : MonoBehaviour
 
     public Dictionary<Vector2Int, TileManager> grid_dict = new Dictionary<Vector2Int, TileManager>();
     public Dictionary<Vector2Int, TileManager> input_dict = new Dictionary<Vector2Int, TileManager>();
+    public Dictionary<Vector2Int, GameObject> output_dict = new Dictionary<Vector2Int, GameObject>();
 
     public List<Vector2Int> direction_list = new List<Vector2Int>
         {
@@ -69,7 +71,6 @@ public class GridManager : MonoBehaviour
             for (int i = 0; i < direction_list.Count; i++)
             {
                 Vector2Int search_pos = pos + direction_list[i];
-                //Debug.Log(input_tile.PrintMatrix(input_tile.matrix));
                 if(searchAcceptedGateAt(search_pos, i, input_tile.matrix))
                 {
                     Debug.Log("fire: " + input_tile.name + arrow[i]);
@@ -89,8 +90,37 @@ public class GridManager : MonoBehaviour
         fireInputs();
     }
 
+    public bool SetOutputTile(Vector2Int pos, GameObject tile)
+    {
+        if (IsOccupied(pos))
+        {
+            return false;
+        }
+        else
+        {
+            TileManager tile_mng = tile.GetComponent<TileManager>();
+            SetTile(pos, tile_mng);
+        }
+        return true;
+    }
+
+    public void ClearOutputTile()
+    {
+        foreach (var pair in output_dict)
+        {
+            if (pair.Value != null)
+            {
+                Debug.Log("Destroy: " + pair.Value.name);
+                Destroy(pair.Value);
+            }
+        }
+
+        output_dict.Clear();
+    }
+
     public void RemoveTile(Vector2Int pos)
     {
+        ClearOutputTile();
         grid_dict.Remove(pos);
         input_dict.Remove(pos);
     }
