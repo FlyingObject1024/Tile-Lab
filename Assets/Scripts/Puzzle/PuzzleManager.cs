@@ -163,6 +163,7 @@ public class PuzzleManager : MonoBehaviour
         {
             Debug.Log(this.name + " "+ tileManager.name + " " + tiles.Count);
             tileManager.setMatrix(size, mat);
+            tileManager.PrintMatrix(mat);
             tileManager.init();
         }
     }

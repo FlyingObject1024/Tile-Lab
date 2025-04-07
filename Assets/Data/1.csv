@@ -13,7 +13,7 @@ inputs,3
 gates,3
 inversion,uni
 xFlip,uni
-180Rotate,uni
+rotate180,uni
 goals,3
 2,
 1,1
@@ -33,7 +33,7 @@ inputs,2
 0,0
 1,0
 gates,4
-180Rotate,uni
+rotate180,uni
 inversion,uni
 xFlip,uni
 y=-xFlip,uni
@@ -59,7 +59,7 @@ inputs,4
 1,0
 0,0
 gates,4
-180Rotate,bi
+rotate180,bi
 inversion,bi
 xFlip,bi
 y=-xFlip,bi

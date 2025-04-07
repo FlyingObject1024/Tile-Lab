@@ -70,7 +70,8 @@ public class StageManager : MonoBehaviour
 
                 PuzzleManager puzzle_manager = puzzles[reading_puzzle_index].GetComponent<PuzzleManager>();
                 puzzle_manager.setMatrix(matrix_size, reading_matrix);
-                reading_matrix.Clear();
+                //reading_matrix.Clear();
+                reading_matrix = new List<List<int>>();
                 reading_mode = ReadModeState.ReadInputs;
             }
         }
@@ -149,7 +150,8 @@ public class StageManager : MonoBehaviour
                 Debug.Log("setmatrix from puzzle: " + reading_puzzle_index);
                 PuzzleManager puzzle_manager = puzzles[reading_puzzle_index].GetComponent<PuzzleManager>();
                 puzzle_manager.setMatrix(matrix_size, reading_matrix);
-                reading_matrix.Clear();
+                //reading_matrix.Clear();
+                reading_matrix = new List<List<int>>();
                 reading_mode = ReadModeState.ReadGoals;
             }
         }

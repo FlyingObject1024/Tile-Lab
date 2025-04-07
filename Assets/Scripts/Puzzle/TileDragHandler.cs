@@ -1,4 +1,4 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -33,6 +33,21 @@ public class TileDragHandler : MonoBehaviour
             Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             mousePos.z = 0;
             transform.position = mousePos;
+
+            // Gateã‚’å›žè»¢
+            if (Equals(tile_mng.tileType, TileType.Gate))
+            {
+                // Mouse scrollæ¤œçŸ¥
+                Vector2 scroll = Input.mouseScrollDelta;
+                if (scroll.y > 0)
+                {
+                    tile_mng.spinTile(SpinDirection.Clockwise);
+                }
+                else if (scroll.y < 0)
+                {
+                    tile_mng.spinTile(SpinDirection.CounterClockwise);
+                }
+            }
         }
     }
 
@@ -43,14 +58,14 @@ public class TileDragHandler : MonoBehaviour
 
         Vector2Int gridPos = GridManager.Instance.WorldToGrid(transform.position);
 
-        // grid–¢è—L‚È‚ç”z’u
+        // gridæœªå æœ‰ãªã‚‰é…ç½®
         if (!GridManager.Instance.IsOccupied(gridPos))
         {
             tile_mng.PlaceAt(gridPos);
         }
         else
         {
-            // –ß‚·
+            // æˆ»ã™
             tile_mng.PlaceAt(tile_mng.gridPosition);
         }
         

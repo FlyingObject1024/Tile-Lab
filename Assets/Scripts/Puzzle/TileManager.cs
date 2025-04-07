@@ -1,5 +1,7 @@
-using System.Collections.Generic;
+ï»¿using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
+using static TMPro.SpriteAssetUtilities.TexturePacker_JsonArray;
 
 public enum TileType { Input, Gate, Output, Goal }
 public enum GateType { None, Uni, Bi }
@@ -24,22 +26,42 @@ public class TileManager : MonoBehaviour
     public bool isPlaced = false;
     public bool isDraggable = false;
 
-    public float placed_x = 0f;
-    public float placed_y = 0f;
-
     int matrix_size = 0;
-    private List<List<int>> matrix = new List<List<int>>();
+    public List<List<int>> matrix = new List<List<int>>();
 
-    int tile_rotation = 0;
+    int tile_direction = 0;
 
     SpriteRenderer renderer;
     int sprite_height = 0;
     int sprite_width = 0;
 
+    public GameObject outputTilePrefab;
+
+
+    public string PrintMatrix(List<List<int>> mat)
+    {
+        string s = mat.Count + ":";
+        
+        for (int y = 0; y < mat.Count; y++)
+        {
+            for (int x = 0; x < mat[y].Count; x++)
+            {
+                s = s + mat[y][x];
+            }
+            s = s + "\n";
+        }
+        return s;
+    }
+
     public void setMatrix(int size, List<List<int>> mat)
     {
         matrix_size = size;
         matrix = mat;
+    }
+
+    public List<List<int>> getMatrix()
+    {
+        return matrix;
     }
 
     public void setGateName(string name)
@@ -62,7 +84,7 @@ public class TileManager : MonoBehaviour
     void setMatrixSprite()
     {
         Debug.Log("setMatrixSprite");
-        // ¬‚³‚¢ƒ^ƒCƒ‹‰æ‘œ‚ğ“Ç‚İ‚İ
+        // å°ã•ã„ã‚¿ã‚¤ãƒ«ç”»åƒã‚’èª­ã¿è¾¼ã¿
         Sprite tile0_sprite = Resources.Load<Sprite>(tile_0_path);
         Sprite tile1_sprite = Resources.Load<Sprite>(tile_1_path);
 
@@ -71,15 +93,15 @@ public class TileManager : MonoBehaviour
             Debug.LogError("Tile sprites not found.");
             return;
         }
-        
+
         Texture2D tile0_tex = tile0_sprite.texture;
         Texture2D tile1_tex = tile1_sprite.texture;
 
-        // 3x3”Å‚É–¢‘Î‰
+        // 3x3ç‰ˆã«æœªå¯¾å¿œ
         int tile_width = tile0_tex.width;
         int tile_height = tile0_tex.height;
 
-        // 2x2–‡‚ğ“\‚è•t‚¯‚é‚Ì‚ÅA‘S‘ÌƒTƒCƒY‚Í2”{
+        // 2x2æšã‚’è²¼ã‚Šä»˜ã‘ã‚‹ã®ã§ã€å…¨ä½“ã‚µã‚¤ã‚ºã¯2å€
         sprite_width = tile_width * 2;
         sprite_height = tile_height * 2;
 
@@ -88,7 +110,7 @@ public class TileManager : MonoBehaviour
         Debug.Log("generateSprite");
 
         string sprite_name = "";
-        // “\‚è•t‚¯
+        // è²¼ã‚Šä»˜ã‘
         for (int y = 0; y < matrix.Count; y++)
         {
             for (int x = 0; x < matrix[y].Count; x++)
@@ -96,15 +118,15 @@ public class TileManager : MonoBehaviour
                 int value = matrix[y][x];
                 Texture2D sourceTex = value == 0 ? tile0_tex : tile1_tex;
 
-                // “\‚è•t‚¯ˆÊ’u
+                // è²¼ã‚Šä»˜ã‘ä½ç½®
                 int px = x * tile_width;
                 int py = ((matrix_size - 1) - y) * tile_height;
 
-                // sourceTex‚©‚çƒsƒNƒZƒ‹î•ñ‚ğæ‚èo‚µ‚ÄAnewTexture‚É“\‚é
+                // sourceTexã‹ã‚‰ãƒ”ã‚¯ã‚»ãƒ«æƒ…å ±ã‚’å–ã‚Šå‡ºã—ã¦ã€newTextureã«è²¼ã‚‹
                 Color[] pixels = sourceTex.GetPixels();
                 newTexture.SetPixels(px, py, tile_width, tile_height, pixels);
 
-                if(x == 0)
+                if (x == 0)
                 {
                     sprite_name = sprite_name + value;
                 }
@@ -113,16 +135,16 @@ public class TileManager : MonoBehaviour
                     sprite_name = sprite_name + "-" + value;
                 }
             }
-            if(y < matrix.Count - 1)
+            if (y < matrix.Count - 1)
             {
                 sprite_name = sprite_name + "_";
             }
         }
 
-        newTexture.Apply(); // •ÏX‚ğŠm’è
+        newTexture.Apply(); // å¤‰æ›´ã‚’ç¢ºå®š
 
         Debug.Log("attachSprite: " + sprite_name);
-        // V‚µ‚¢ƒXƒvƒ‰ƒCƒg‚ğì¬‚µ‚Ä“\‚è•t‚¯
+        // æ–°ã—ã„ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆã‚’ä½œæˆã—ã¦è²¼ã‚Šä»˜ã‘
         Rect rect = new Rect(0, 0, sprite_width, sprite_height);
         Vector2 pivot = new Vector2(0.5f, 0.5f);
         Sprite newSprite = Sprite.Create(newTexture, rect, pivot);
@@ -140,7 +162,7 @@ public class TileManager : MonoBehaviour
         {
             gate_sprite = Resources.Load<Sprite>(unigate_path);
         }
-        else if(gateType == GateType.Bi)
+        else if (gateType == GateType.Bi)
         {
             gate_sprite = Resources.Load<Sprite>(bigate_path);
         }
@@ -179,6 +201,13 @@ public class TileManager : MonoBehaviour
 
     public void init()
     {
+        outputTilePrefab = Resources.Load<GameObject>("Prefabs/OutputTile");
+
+        if (outputTilePrefab == null)
+        {
+            Debug.LogError("ã„ãšã‚Œã‹ã®Tileãƒ—ãƒ¬ãƒãƒ–ãŒResources/Prefabsã«å­˜åœ¨ã—ã¾ã›ã‚“ï¼");
+        }
+
         renderer = GetComponent<SpriteRenderer>();
         if (tileType == TileType.Input)
         {
@@ -197,50 +226,285 @@ public class TileManager : MonoBehaviour
             //outputInit();
         }
 
-        if(tileType == TileType.Input || tileType == TileType.Gate)
+        if (tileType == TileType.Input || tileType == TileType.Gate)
         {
             isDraggable = true;
             BoxCollider2D box_collider_2d = GetComponent<BoxCollider2D>();
-            box_collider_2d.size = new Vector2(2f,2f);
+            box_collider_2d.size = new Vector2(2f, 2f);
         }
     }
 
-    // Input‹N“_
-    public void startGenerateOutput()
+    // å…¥åŠ›ã™ã‚‹è¡Œåˆ—ã‚’å—ã‘ä»˜ã‘ã‚‹
+    public bool requestInput(int direction, List<List<int>> input_matrix)
     {
-
-    }
-
-    // InputEgateˆ—
-    public bool generateOutput(int input_matrix_size, List<List<int>> input_matrix)
-    {
-        if(!(2 <= input_matrix_size && input_matrix_size <= 3))
+        if (tileType == TileType.Gate)
         {
-            return false;
+            if (gateType != GateType.None && direction == tile_direction)
+            {
+                // é€šå¸¸æ–¹å‘
+                Vector2Int search_pos = gridPosition + GridManager.Instance.direction_list[tile_direction];
+                List<List<int>> output_matrix = calcOutput(input_matrix);
+                if (GridManager.Instance.searchAcceptedGateAt(search_pos, tile_direction, output_matrix))
+                {
+                    Debug.Log("hop " + gatename);
+                    return true;
+                }
+                else
+                {
+                    generateOutput(output_matrix);
+                    return true;
+                }
+            }
+            else if (gateType == GateType.Bi && (direction == ((tile_direction + 1) % 4)))
+            {
+                // 2ã¤ã‚ã®æ–¹å‘
+            }
         }
-        // —×‚Ìgate‚ğŒ©‚Â‚¯‚é
-
-        // gate‚ÌgenerateOutput‚ğo—Í‚³‚¹‚é
-
-        // gate‚Ìsæ‚àgate‚È‚çAÄ‹A‚ÅŒÄ‚Ô
-
         return false;
     }
 
+    // outputã‚’ç”Ÿæˆã™ã‚‹
+    public void generateOutput(List<List<int>> output_matrix)
+    {
+        Debug.Log("Generate: "+PrintMatrix(output_matrix));
+    }
 
-    // Gate‰ñ“]ˆ—
+    // å„ç¨®Gateå‡¦ç†
+    List<List<int>> inversion(List<List<int>> input_matrix)
+    {
+        //0->1, 1->0ã«å¤‰æ›
+        int n = input_matrix.Count;
+        var output_matrix = new List<List<int>>();
+
+        for (int i = 0; i < n; i++)
+        {
+            var row = new List<int>();
+            for (int j = 0; j < n; j++)
+            {
+                row.Add(input_matrix[i][j] == 0 ? 1 : 0);
+            }
+            output_matrix.Add(row);
+        }
+
+        return output_matrix;
+    }
+
+    List<List<int>> xFlip(List<List<int>> input_matrix)
+    {
+        //xè»¸ã§åè»¢
+        int n = input_matrix.Count;
+        var output_matrix = new List<List<int>>();
+
+        for (int i = n - 1; i >= 0; i--)
+        {
+            output_matrix.Add(new List<int>(input_matrix[i]));
+        }
+
+        return output_matrix;
+    }
+
+    List<List<int>> yFlip(List<List<int>> input_matrix)
+    {
+        //yè»¸ã§åè»¢
+        int n = input_matrix.Count;
+        var output_matrix = new List<List<int>>();
+
+        for (int i = 0; i < n; i++)
+        {
+            var flippedRow = new List<int>();
+            for (int j = n - 1; j >= 0; j--)
+            {
+                flippedRow.Add(input_matrix[i][j]);
+            }
+            output_matrix.Add(flippedRow);
+        }
+
+        return output_matrix;
+    }
+
+    List<List<int>> diagonalFlip(List<List<int>> input_matrix)
+    {
+        //å¯¾è§’ç·šã§åè»¢
+        int n = input_matrix.Count;
+        var output_matrix = new List<List<int>>();
+
+        for (int i = 0; i < n; i++)
+        {
+            var row = new List<int>();
+            for (int j = 0; j < n; j++)
+            {
+                row.Add(input_matrix[j][i]);
+            }
+            output_matrix.Add(row);
+        }
+
+        return output_matrix;
+    }
+
+    List<List<int>> reverseDiagonalFlip(List<List<int>> input_matrix)
+    {
+        // â†™ é€†å¯¾è§’ç·šã§åè»¢
+        int n = input_matrix.Count;
+        var output_matrix = new List<List<int>>(Enumerable.Range(0, n).Select(_ => new List<int>(new int[n])));
+
+        for (int i = 0; i < n; i++)
+            for (int j = 0; j < n; j++)
+                output_matrix[n - 1 - j][n - 1 - i] = input_matrix[i][j];
+
+        return output_matrix;
+    }
+
+    List<List<int>> rotate90(List<List<int>> input_matrix)
+    {
+        // åæ™‚è¨ˆå›ã‚Š90åº¦å›è»¢
+        int n = input_matrix.Count;
+        var output_matrix = new List<List<int>>();
+
+        for (int i = 0; i < n; i++)
+        {
+            var row = new List<int>();
+            for (int j = 0; j < n; j++)
+            {
+                row.Add(input_matrix[j][n - 1 - i]);
+            }
+            output_matrix.Add(row);
+        }
+
+        return output_matrix;
+    }
+
+    List<List<int>> rotate180(List<List<int>> input_matrix)
+    {
+        // åæ™‚è¨ˆå›ã‚Š180åº¦å›è»¢
+        return rotate90(rotate90(input_matrix));
+    }
+
+    List<List<int>> rotate270(List<List<int>> input_matrix)
+    {
+        // åæ™‚è¨ˆå›ã‚Š270åº¦å›è»¢
+        return rotate90(rotate180(input_matrix));
+    }
+
+    List<List<int>> firstRowSlide(List<List<int>> input_matrix)
+    {
+        // æœ€åˆã®è¡Œã‚’æœ€å¾Œã¸ç§»å‹•
+        var output_matrix = new List<List<int>>(input_matrix.Skip(1));
+        output_matrix.Add(new List<int>(input_matrix[0]));
+        return output_matrix;
+    }
+
+    List<List<int>> firstColSlide(List<List<int>> input_matrix)
+    {
+        // æœ€åˆã®åˆ—ã‚’æœ€å¾Œã¸ç§»å‹•
+        var output_matrix = new List<List<int>>();
+        foreach (var row in input_matrix)
+        {
+            var newRow = row.Skip(1).ToList();
+            newRow.Add(row[0]);
+            output_matrix.Add(newRow);
+        }
+        return output_matrix;
+    }
+
+    List<List<int>> lastRowSlide(List<List<int>> input_matrix)
+    {
+        // æœ€å¾Œã®è¡Œã‚’æœ€åˆã¸ç§»å‹•
+        var output_matrix = new List<List<int>>();
+        output_matrix.Add(new List<int>(input_matrix.Last()));
+        output_matrix.AddRange(input_matrix.Take(input_matrix.Count - 1));
+        return output_matrix;
+    }
+
+    List<List<int>> lastColSlide(List<List<int>> input_matrix)
+    {
+        // æœ€å¾Œã®åˆ—ã‚’æœ€åˆã¸ç§»å‹•
+        var output_matrix = new List<List<int>>();
+        foreach (var row in input_matrix)
+        {
+            var newRow = new List<int> { row.Last() };
+            newRow.AddRange(row.Take(row.Count - 1));
+            output_matrix.Add(newRow);
+        }
+        return output_matrix;
+    }
+
+    // Gateåˆ†å²
+    List<List<int>> calcOutput(List<List<int>> input_matrix)
+    {
+        if (gatename == "inversion")
+        {
+            return inversion(input_matrix);
+        }
+        else if (gatename == "xFlip")
+        {
+            return xFlip(input_matrix);
+        }
+        else if (gatename == "yFlip")
+        {
+            return yFlip(input_matrix);
+        }
+        else if (gatename == "diagonalFlip")
+        {
+            return diagonalFlip(input_matrix);
+        }
+        else if (gatename == "reverseDiagonalFlip")
+        {
+            return reverseDiagonalFlip(input_matrix);
+        }
+        else if (gatename == "rotate90")
+        {
+            return rotate90(input_matrix);
+        }
+        else if (gatename == "rotate180")
+        {
+            return rotate180(input_matrix);
+        }
+        else if (gatename == "rotate270")
+        {
+            return rotate270(input_matrix);
+        }
+        else if (gatename == "firstRowSlide")
+        {
+            return firstRowSlide(input_matrix);
+        }
+        else if (gatename == "firstColSlide")
+        {
+            return firstColSlide(input_matrix);
+        }
+        else if (gatename == "lastRowSlide")
+        {
+            return lastRowSlide(input_matrix);
+        }
+        else if (gatename == "lastRowSlide")
+        {
+            return lastRowSlide(input_matrix);
+        }
+        else
+        {
+            return input_matrix;
+        }
+    }
+
+    // tile_direction
+    public int getTileRotate()
+    {
+        return tile_direction;
+    }
+
+    // Gateå›è»¢å‡¦ç†
     public void spinTile(SpinDirection spin)
     {
         if (spin == SpinDirection.Clockwise)
         {
-            tile_rotation++;
-            tile_rotation = tile_rotation % 4;
+            tile_direction++;
+            tile_direction = tile_direction % 4;
+            this.transform.Rotate(0f, 0f, 90f);
         }
         else if (spin == SpinDirection.CounterClockwise)
         {
-            tile_rotation--;
-            if (tile_rotation < 0) tile_rotation = 3;
+            tile_direction--;
+            if (tile_direction < 0) tile_direction = 3;
+            this.transform.Rotate(0f, 0f, -90f);
         }
-        this.transform.Rotate(0f, 0f, tile_rotation * 90f);
     }
 }
