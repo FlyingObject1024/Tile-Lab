@@ -49,22 +49,49 @@ Unityエンジンが実装している"シーン"が入っている。
 
 ### Mainフォルダ
 Mainシーン及び、シーン遷移用のスクリプトを入れている。
+Titleシーン用の処理も含んでいる。
 
 #### Main.cs
 Titleシーンを開くためのもの。編集は不要。
-Mainシーンの
 
 #### Change_scene.cs
 シーン遷移を担っている。
 ここにあるメソッド以外から遷移することのないように。
 「ステージボタン」や「戻るボタン」などにアタッチする。
 
-### Titleフォルダ
+### Stage_Selectフォルダ
+Stage_selectシーン用のスクリプト群。
 
-#### Title.cs
-#### 
+#### Stage_select.cs
 
-### StageSelectフォルダ
+#### StageClickHandler.cs
+
+### Puzzleフォルダ(Stageフォルダ)
+ここの比重が最も重い。パズルのゲームそのものを構成している。
+
+#### Puzzle.cs(Stage.cs)
+ステージを起動するためのもの。
+
+#### StageManager.cs
+Stageという名前の空GameObjectにアタッチされている。
+.csvファイルを読み込み、puzzleプレハブ、tileプレハブからインスタンスを生成する。
+
+#### UiManager.cs
+Stageという名前の空GameObjectにアタッチされている。
+起動しているpuzzleに従ってUIを構成する。
+UiCanvas、InventoryField、GoalFieldのUIを操作するためのもの。
+
+#### PuzzleManager.cs
+puzzleプレハブにアタッチされている。
+パズル１つに配置されたタイルを保持している
+
+
+#### TileManager.cs
+
+#### TileDragHandler.cs
+
+
+
 
 ### Dataフォルダ
 csvファイルで構成されたステージデータが入っている。
