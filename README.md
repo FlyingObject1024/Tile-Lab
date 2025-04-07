@@ -83,15 +83,24 @@ UiCanvas、InventoryField、GoalFieldのUIを操作するためのもの。
 
 #### PuzzleManager.cs
 puzzleプレハブにアタッチされている。
-パズル１つに配置されたタイルを保持している
+中間処理を行っているため、TileManagerに数値を受け渡すような処理が多い。
 
+#### GridManager.cs
+puzzleにアタッチされている。
+タイルが配置されている場所を管理するためのもの。
+同じ座標には二つのタイルが入らない。
+が、Outputタイルのみ例外で、上からGateタイルを入れられる。
+座標とタイルは辞書で保存されている。
+(keyがVector2Int、valueがTileManager)
 
 #### TileManager.cs
+タイル1つにアタッチされている。
+タイルの種類にはInput、Gate、Goal、Outputがある。
+それぞれの種類のタイルによって使用するメソッドが異なる。
 
 #### TileDragHandler.cs
-
-
-
+タイルをドラッグアンドドロップするためのスクリプト。
+【未実装】ホイール情報から、Gateを回転させる。
 
 ### Dataフォルダ
 csvファイルで構成されたステージデータが入っている。
