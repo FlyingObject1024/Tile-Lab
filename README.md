@@ -51,10 +51,10 @@ Unityエンジンが実装している"シーン"が入っている。
 Mainシーン及び、シーン遷移用のスクリプトを入れている。
 Titleシーン用の処理も含んでいる。
 
-#### Main.cs
+#### 🖥Main.cs
 Titleシーンを開くためのもの。編集は不要。
 
-#### Change_scene.cs
+#### 🖥Change_scene.cs
 シーン遷移を担っている。
 ここにあるメソッド以外から遷移することのないように。
 「ステージボタン」や「戻るボタン」などにアタッチする。
@@ -62,30 +62,30 @@ Titleシーンを開くためのもの。編集は不要。
 ### 📁Stage_Selectフォルダ
 Stage_selectシーン用のスクリプト群。
 
-#### Stage_select.cs
+#### 🖥Stage_select.cs
 
-#### StageClickHandler.cs
+#### 🖥StageClickHandler.cs
 
-### Puzzleフォルダ(Stageフォルダ)
+### 📁Puzzleフォルダ(Stageフォルダ)
 ここの比重が最も重い。パズルのゲームそのものを構成している。
 
-#### Puzzle.cs(Stage.cs)
+#### 🖥Puzzle.cs(Stage.cs)
 ステージを起動するためのもの。
 
-#### StageManager.cs
+#### 🖥StageManager.cs
 Stageという名前の空GameObjectにアタッチされている。
 .csvファイルを読み込み、puzzleプレハブ、tileプレハブからインスタンスを生成する。
 
-#### UiManager.cs
+#### 🖥UiManager.cs
 Stageという名前の空GameObjectにアタッチされている。
 起動しているpuzzleに従ってUIを構成する。
 UiCanvas、InventoryField、GoalFieldのUIを操作するためのもの。
 
-#### PuzzleManager.cs
+#### 🖥PuzzleManager.cs
 puzzleプレハブにアタッチされている。
 中間処理を行っているため、TileManagerに数値を受け渡すような処理が多い。
 
-#### GridManager.cs
+#### 🖥GridManager.cs
 puzzleにアタッチされている。
 タイルが配置されている場所を管理するためのもの。
 同じ座標には二つのタイルが入らない。
@@ -93,12 +93,12 @@ puzzleにアタッチされている。
 座標とタイルは辞書で保存されている。
 (keyがVector2Int、valueがTileManager)
 
-#### TileManager.cs
+#### 🖥TileManager.cs
 タイル1つにアタッチされている。
 タイルの種類にはInput、Gate、Goal、Outputがある。
 それぞれの種類のタイルによって使用するメソッドが異なる。
 
-#### TileDragHandler.cs
+#### 🖥TileDragHandler.cs
 タイルをドラッグアンドドロップするためのスクリプト。
 【未実装】ホイール情報から、Gateを回転させる。
 
