@@ -9,7 +9,7 @@ public enum SpinDirection { Clockwise, CounterClockwise }
 
 public class TileManager : MonoBehaviour
 {
-    public string tile_0_path = "Images/tile_0";
+    public static string tile_0_path = "Images/tile_0";
     public string tile_1_path = "Images/tile_1";
 
     public string unigate_path = "Images/unigate";
@@ -36,6 +36,11 @@ public class TileManager : MonoBehaviour
     int sprite_width = 0;
 
     public GameObject outputTilePrefab;
+
+    private void Awake()
+    {
+        renderer = GetComponent<SpriteRenderer>();
+    }
 
     public string PrintMatrix(List<List<int>> mat)
     {
@@ -207,7 +212,6 @@ public class TileManager : MonoBehaviour
             Debug.LogError("いずれかのTileプレハブがResources/Prefabsに存在しません！");
         }
 
-        renderer = GetComponent<SpriteRenderer>();
         if (tileType == TileType.Input)
         {
             inputInit();
@@ -268,7 +272,7 @@ public class TileManager : MonoBehaviour
         Debug.Log("Generate: "+PrintMatrix(output_matrix));
 
         GameObject new_output_tile = Instantiate(outputTilePrefab);
-        new_output_tile.name = "output<-" + this.name;
+        new_output_tile.name = "output: " + this.name;
         new_output_tile.transform.SetParent(this.transform);
 
         TileManager tileManager = new_output_tile.GetComponent<TileManager>();
@@ -280,7 +284,11 @@ public class TileManager : MonoBehaviour
 
             Vector2Int newPosition = gridPosition + GridManager.Instance.direction_list[tile_direction];
             
-            return GridManager.Instance.SetOutputTile(newPosition, new_output_tile);
+            if(GridManager.Instance.SetOutputTile(newPosition, new_output_tile))
+            {
+                new_output_tile.transform.position = GridManager.Instance.GridToWorld(newPosition);
+                return true;
+            }
         }
 
         return false;

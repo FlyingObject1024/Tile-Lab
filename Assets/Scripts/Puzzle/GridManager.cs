@@ -9,8 +9,8 @@ public class GridManager : MonoBehaviour
 
     // セルサイズを720px(480px)にする
     private int gridSize = 480;
-    // 3.45fがほぼピッタリだが、正確な数値ではない
-    private float cellSize = 3.45f;
+    // この数値がほぼピッタリだが、正確な計算をしたものではない
+    private float cellSize = 3.5f;
 
     public Dictionary<Vector2Int, TileManager> grid_dict = new Dictionary<Vector2Int, TileManager>();
     public Dictionary<Vector2Int, TileManager> input_dict = new Dictionary<Vector2Int, TileManager>();
@@ -99,7 +99,7 @@ public class GridManager : MonoBehaviour
         else
         {
             TileManager tile_mng = tile.GetComponent<TileManager>();
-            SetTile(pos, tile_mng);
+            output_dict.Add(pos, tile);
         }
         return true;
     }
