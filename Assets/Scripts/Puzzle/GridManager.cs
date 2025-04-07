@@ -5,14 +5,27 @@ public class GridManager : MonoBehaviour
 {
     public static GridManager Instance;
 
-    // セルサイズを720px(480px+240px)にする
-    public float cellSize = 2.0f;
+    // セルサイズを720px(480px)にする
+    private int gridSize = 480;
+    // 3.45fがほぼピッタリだが、正確な数値ではない
+    private float cellSize = 3.45f;
 
     public Dictionary<Vector2Int, TileManager> grid_dic = new Dictionary<Vector2Int, TileManager>();
 
     void Awake()
     {
         Instance = this;
+        Camera cam = Camera.main;
+        if (cam.orthographic)
+        {
+            float pixelsPerUnit = Screen.height / (cam.orthographicSize * 2);
+            //cellSize = gridSize / pixelsPerUnit;
+            Debug.Log("cellsize: " + cellSize);
+        }
+        else
+        {
+            Debug.LogWarning("カメラがOrthographicではありません");
+        }
     }
 
     public bool IsOccupied(Vector2Int pos)
