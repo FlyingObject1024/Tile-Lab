@@ -75,6 +75,7 @@ public class TileManager : MonoBehaviour
         Texture2D tile0_tex = tile0_sprite.texture;
         Texture2D tile1_tex = tile1_sprite.texture;
 
+        // 3x3”Å‚É–¢‘Î‰ž
         int tile_width = tile0_tex.width;
         int tile_height = tile0_tex.height;
 
@@ -240,5 +241,6 @@ public class TileManager : MonoBehaviour
             tile_rotation--;
             if (tile_rotation < 0) tile_rotation = 3;
         }
+        this.transform.Rotate(0f, 0f, tile_rotation * 90f);
     }
 }

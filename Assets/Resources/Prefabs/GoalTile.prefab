@@ -19,14 +19,13 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &1277690786846839737
-Transform:
+--- !u!224 &1277690786846839737
+RectTransform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7263418370619294081}
-  serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -34,6 +33,11 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 1, y: 1}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &5206577398440782158
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -46,10 +50,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f02596a83e2d4b048b0e5e0c6bd512af, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tile_0_path: Images/tile_0
+  tile_1_path: Images/tile_1
+  unigate_path: Images/unigate
+  bigate_path: Images/bigate
+  correct_icon_path: Images/correct
+  wrong_icon_path: Images/wrong
   tileType: 0
   gateType: 0
+  gatename: None
   gridPosition: {x: 0, y: 0}
   isPlaced: 0
+  isDraggable: 0
+  placed_x: 0
+  placed_y: 0
 --- !u!212 &2484617276427025298
 SpriteRenderer:
   m_ObjectHideFlags: 0

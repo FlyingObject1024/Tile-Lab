@@ -34,9 +34,23 @@ public class GridManager : MonoBehaviour
         return grid_dic.TryGetValue(pos, out tile);
     }
 
+    public void searchGateAt(Vector2Int pos)
+    {
+
+    }
+
+    public void fireInput()
+    {
+
+    }
+
     public void SetTile(Vector2Int pos, TileManager tile)
     {
         grid_dic.Add(pos, tile);
+        if (tile.tileType == TileType.Input)
+        {
+            fireInput();
+        }
     }
 
     public void RemoveTile(Vector2Int pos)
