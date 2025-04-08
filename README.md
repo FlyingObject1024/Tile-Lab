@@ -63,8 +63,12 @@ Titleシーンを開くためのもの。編集は不要。
 Stage_selectシーン用のスクリプト群。
 
 #### 🖥Stage_select.cs
+ステージ選択画面の情報をstage.csvから読み込み、ブロック状で表示するスクリプト。
+生成されたブロックはstage<n>の名前を持つGameObjectの形式になっており、それぞれStageClickHandler.csがアタッチされている。
 
 #### 🖥StageClickHandler.cs
+ステージ選択画面のボタンの役割を持つスクリプト。
+ここから、mainのChange_scene.csを呼び出してステージを起動する。
 
 ### 📁Puzzleフォルダ(Stageフォルダ)
 ここの比重が最も重い。パズルのゲームそのものを構成している。
