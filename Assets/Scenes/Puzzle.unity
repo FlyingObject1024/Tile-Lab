@@ -490,7 +490,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1144611916}
   m_Direction: 0
   m_Value: 0
-  m_Size: 0.14666666
+  m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -716,6 +716,7 @@ GameObject:
   m_Component:
   - component: {fileID: 635848050}
   - component: {fileID: 635848049}
+  - component: {fileID: 635848051}
   m_Layer: 0
   m_Name: Field
   m_TagString: Untagged
@@ -794,6 +795,19 @@ Transform:
   - {fileID: 1281554150}
   m_Father: {fileID: 665408923}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &635848051
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 635848048}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f426ff28ca84fa54ca712c4c19ac66e4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  camera: {fileID: 454849746}
 --- !u!1 &665408919
 GameObject:
   m_ObjectHideFlags: 0
@@ -877,19 +891,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f02596a83e2d4b048b0e5e0c6bd512af, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tile_0_path: Images/tile_0
   tile_1_path: Images/tile_1
-  uni_gate_path: Images/uni_gate
-  bi_gate_path: Images/bi_gate
+  unigate_path: Images/unigate
+  bigate_path: Images/bigate
   correct_icon_path: Images/correct
   wrong_icon_path: Images/wrong
+  outputTilePrefab: {fileID: 0}
   tileType: 0
   gateType: 0
   gatename: None
   gridPosition: {x: 0, y: 0}
   isPlaced: 0
-  placed_x: 0
-  placed_y: 0
+  isDraggable: 0
 --- !u!114 &665408925
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -902,9 +915,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cfe3d27b14364bb4cb8df17d58a37e0f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  stage: {fileID: 0}
   inputTilePrefab: {fileID: 0}
   gateTilePrefab: {fileID: 0}
   goalTilePrefab: {fileID: 0}
+  grid_manager: {fileID: 0}
 --- !u!114 &665408926
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1873,8 +1888,8 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 672669c391cec7448a921184b067c06e, type: 3}
---- !u!4 &4828130592377320772 stripped
-Transform:
+--- !u!224 &4828130592377320772 stripped
+RectTransform:
   m_CorrespondingSourceObject: {fileID: 3131383471087559213, guid: 672669c391cec7448a921184b067c06e, type: 3}
   m_PrefabInstance: {fileID: 4828130592377320771}
   m_PrefabAsset: {fileID: 0}
@@ -2071,8 +2086,8 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4098857acfc8d5f4e9f5ba4f74609f48, type: 3}
---- !u!4 &7887202941383501794 stripped
-Transform:
+--- !u!224 &7887202941383501794 stripped
+RectTransform:
   m_CorrespondingSourceObject: {fileID: 1277690786846839737, guid: 4098857acfc8d5f4e9f5ba4f74609f48, type: 3}
   m_PrefabInstance: {fileID: 7887202941383501793}
   m_PrefabAsset: {fileID: 0}
