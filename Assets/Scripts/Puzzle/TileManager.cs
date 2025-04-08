@@ -18,6 +18,8 @@ public class TileManager : MonoBehaviour
     public string correct_icon_path = "Images/correct";
     public string wrong_icon_path = "Images/wrong";
 
+    public GameObject outputTilePrefab;
+
     public TileType tileType;
     public GateType gateType;
     public string gatename = "None";
@@ -34,8 +36,6 @@ public class TileManager : MonoBehaviour
     SpriteRenderer renderer;
     int sprite_height = 0;
     int sprite_width = 0;
-
-    public GameObject outputTilePrefab;
 
     private void Awake()
     {
@@ -247,7 +247,7 @@ public class TileManager : MonoBehaviour
                 // 通常方向
                 Vector2Int search_pos = gridPosition + GridManager.Instance.direction_list[tile_direction];
                 List<List<int>> output_matrix = calcOutput(input_matrix);
-                if (GridManager.Instance.searchAcceptedGateAt(search_pos, tile_direction, output_matrix))
+                if (GridManager.Instance.searchAcceptedGateAt(search_pos, direction, output_matrix))
                 {
                     Debug.Log("hop " + gatename);
                     return true;
@@ -258,9 +258,21 @@ public class TileManager : MonoBehaviour
                     return true;
                 }
             }
-            else if (gateType == GateType.Bi && (direction == ((tile_direction + 1) % 4)))
+            if (gateType == GateType.Bi && (direction == ((tile_direction + 3) % 4)))
             {
                 // 2つめの方向
+                Vector2Int search_pos = gridPosition + GridManager.Instance.direction_list[direction];
+                List<List<int>> output_matrix = calcOutput(input_matrix);
+                if (GridManager.Instance.searchAcceptedGateAt(search_pos, direction, output_matrix))
+                {
+                    Debug.Log("hop " + gatename);
+                    return true;
+                }
+                else
+                {
+                    generateOutput(direction, output_matrix);
+                    return true;
+                }
             }
         }
         return false;
@@ -269,8 +281,6 @@ public class TileManager : MonoBehaviour
     // outputを生成する
     public bool generateOutput(int direction, List<List<int>> output_matrix)
     {
-        Debug.Log("Generate: "+PrintMatrix(output_matrix));
-
         GameObject new_output_tile = Instantiate(outputTilePrefab);
         new_output_tile.name = "output: " + this.name;
         new_output_tile.transform.SetParent(this.transform);
@@ -282,12 +292,17 @@ public class TileManager : MonoBehaviour
             tileManager.setMatrix(output_matrix.Count, output_matrix);
             tileManager.setMatrixSprite();
 
-            Vector2Int newPosition = gridPosition + GridManager.Instance.direction_list[tile_direction];
+            Vector2Int newPosition = gridPosition + GridManager.Instance.direction_list[direction];
             
             if(GridManager.Instance.SetOutputTile(newPosition, new_output_tile))
             {
+                Debug.Log("Generate: \n" + PrintMatrix(output_matrix));
                 new_output_tile.transform.position = GridManager.Instance.GridToWorld(newPosition);
                 return true;
+            }
+            else
+            {
+                Destroy(new_output_tile);
             }
         }
 
@@ -500,9 +515,9 @@ public class TileManager : MonoBehaviour
         {
             return lastRowSlide(input_matrix);
         }
-        else if (gatename == "lastRowSlide")
+        else if (gatename == "lastColSlide")
         {
-            return lastRowSlide(input_matrix);
+            return lastColSlide(input_matrix);
         }
         else
         {
